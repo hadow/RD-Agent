@@ -45,7 +45,7 @@ class KnowledgeMetaData:
 
         """
         if self.embedding is None:
-            self.embedding = APIBackend().create_embedding(input_content=self.content)
+            self.embedding = APIBackend().create_embedding(input_content=self.content,encoding_format="float",)
 
     def from_dict(self, data: dict):
         for key, value in data.items():
