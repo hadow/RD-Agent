@@ -387,10 +387,7 @@ class Env(Generic[ASpecificEnvConf]):
         -------
             EnvResult: An object containing the stdout, the exit code, and the running time in seconds.
         """
-        # _env = self.conf.env_dict.copy()
-        _env = os.environ.copy()
-        _env.update(self.conf.env_dict)
-        _env["PATH"] = self.conf.bin_path + ":" + _env.get("PATH", "")
+        _env = self.conf.env_dict.copy()
         if env:
             _env.update(env)
         env = _env
