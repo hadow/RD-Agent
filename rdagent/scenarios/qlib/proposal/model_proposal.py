@@ -134,14 +134,26 @@ class QlibModelHypothesis2Experiment(ModelHypothesis2Experiment):
     def convert_response(self, response: str, hypothesis: Hypothesis, trace: Trace) -> ModelExperiment:
         response_dict = json.loads(response)
         tasks = []
+
+        required_keys = [
+            "description",
+            "formulation",
+            "architecture",
+            "variables",
+            "hyperparameters",
+            "training_hyperparameters",
+        ]
+
         for model_name in response_dict:
-            description = response_dict[model_name]["description"]
-            formulation = response_dict[model_name]["formulation"]
-            architecture = response_dict[model_name]["architecture"]
-            variables = response_dict[model_name]["variables"]
-            hyperparameters = response_dict[model_name]["hyperparameters"]
-            training_hyperparameters = response_dict[model_name]["training_hyperparameters"]
-            model_type = response_dict[model_name]["model_type"]
+            model_info = response_dict[model_name]
+
+            description = model_info.get("description", "")
+            formulation = model_info.get("formulation", "")
+            architecture = model_info.get("architecture", formulation or description)
+            variables = model_info.get("variables", {})
+            hyperparameters = model_info.get("hyperparameters", {})
+            training_hyperparameters = model_info.get("training_hyperparameters", {})
+            model_type = model_info.get("model_type","")
             tasks.append(
                 ModelTask(
                     name=model_name,
