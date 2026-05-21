@@ -17,7 +17,18 @@ def calculate_embedding_distance_between_str_list(
     if not source_str_list or not target_str_list:
         return [[]]
 
-    embeddings = APIBackend().create_embedding(source_str_list + target_str_list)
+    all_str_list = source_str_list + target_str_list
+
+    def batched_create_embedding(input_list, batch_size=32):
+        backend = APIBackend()
+        all_embeddings = []
+        for i in range(0, len(input_list), batch_size):
+            batch = input_list[i:i + batch_size]
+            all_embeddings.extend(backend.create_embedding(batch))
+        return all_embeddings
+
+    #embeddings = APIBackend().create_embedding(source_str_list + target_str_list)
+    embeddings = batched_create_embedding(all_str_list, batch_size=32)
 
     source_embeddings = embeddings[: len(source_str_list)]
     target_embeddings = embeddings[len(source_str_list) :]
