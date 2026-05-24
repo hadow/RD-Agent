@@ -15,7 +15,7 @@ from rdagent.core.exception import CodeFormatError, CustomRuntimeError, NoOutput
 from rdagent.core.experiment import Experiment, FBWorkspace
 from rdagent.core.utils import cache_with_pickle
 from rdagent.oai.llm_utils import md5_hash
-
+from rdagent.log import rdagent_logger as logger
 
 class FactorTask(CoSTEERTask):
     # TODO:  generalized the attributes into the Task
@@ -160,6 +160,12 @@ class FactorFBWorkspace(FBWorkspace):
                 execution_code_path.write_text((Path(__file__).parent / "factor_execution_template.txt").read_text())
 
             try:
+                logger.info(
+                    f"Executing factor: name={self.target_task.factor_name}, "
+                    f"data_type={data_type}, "
+                    f"workspace={self.workspace_path}, "
+                    f"timeout={FACTOR_COSTEER_SETTINGS.file_based_execution_timeout}"
+                )
                 subprocess.check_output(
                     f"{FACTOR_COSTEER_SETTINGS.python_bin} {execution_code_path}",
                     shell=True,
