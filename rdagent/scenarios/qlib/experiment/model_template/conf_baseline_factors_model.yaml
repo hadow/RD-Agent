@@ -44,7 +44,7 @@ port_analysis_config: &port_analysis_config
         module_path: qlib.contrib.strategy
         kwargs:
             signal: <PRED>
-            topk: 50
+            topk: 30
             n_drop: 5
     backtest:
         start_time: {{ test_start | default("2017-01-01", true) }}
