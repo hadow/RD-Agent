@@ -32,12 +32,12 @@ def _build_execute_calls(exp: QlibFactorExperiment, base_feature_workspaces: lis
     if exp.sub_tasks:
         assert isinstance(exp.prop_dev_feedback, CoSTEERMultiFeedback)
         execute_calls.extend(
-            (implementation.execute, ("All",))
+            (implementation.execute, ("Debug",))
             for implementation, feedback in zip(exp.sub_workspace_list, exp.prop_dev_feedback)
             if implementation and feedback
         )
 
-    execute_calls.extend((workspace.execute, ("All",)) for workspace in base_feature_workspaces)
+    execute_calls.extend((workspace.execute, ("Debug",)) for workspace in base_feature_workspaces)
     return execute_calls
 
 
